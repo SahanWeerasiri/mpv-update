@@ -4,7 +4,7 @@ Architecture Decision Records (ADRs) capture important architectural choices mad
 
 ## Index of Decisions
 
-* [ADR-0001: Record Architecture Decisions](0001-record-architecture-decisions.md)
+* [ADR-0001: Modular MPV Lua Script Architecture](0001-modular-mpv-lua-script-architecture.md)
 
 ---
 

@@ -1,89 +1,89 @@
-# Base Project Template
+# mpv-update
 
-A clean, standardized starter template pre-configured for modern AI-assisted software engineering (Antigravity, Claude Code, Codex, Cursor).
+Custom Lua scripts for the [mpv](https://mpv.io) media player to streamline playlist management, automatically load related files, toggle playback looping, and provide on-screen display (OSD) feedback.
 
-It includes curated **rules**, **workflows**, **skills**, and **security guardrails** to enforce disciplined development:
-```text
-plan ➔ test (TDD) ➔ implement ➔ review ➔ verify
+---
+
+## ⌨️ Shortcuts
+
+| Shortcut | Script | Action |
+| :--- | :--- | :--- |
+| `Ctrl+p` | [`playlist-script.lua`](file:///home/sahan-weerasiri/projects/mpv-update/src/playlist-script.lua) | Display current playlist on OSD with active track indicator (`▶`) |
+| `Ctrl+r` | [`repeat-script.lua`](file:///home/sahan-weerasiri/projects/mpv-update/src/repeat-script.lua) | Toggle playlist repeat/looping on/off |
+| `Ctrl+h` | [`my-first-script.lua`](file:///home/sahan-weerasiri/projects/mpv-update/src/my-first-script.lua) | Show test greeting message on OSD |
+| *(auto)* | [`auto-load-playlist-script.lua`](file:///home/sahan-weerasiri/projects/mpv-update/src/auto-load-playlist-script.lua) | Automatically load sibling files into playlist on launch |
+
+---
+
+## 🚀 Installation
+
+To use these scripts, place them in your mpv scripts directory:
+
+- **Linux / macOS:** `~/.config/mpv/scripts/`
+- **Windows:** `%APPDATA%\mpv\scripts\`
+
+mpv automatically loads all `.lua` files in this directory on startup.
+
+### Linux / macOS:
+
+```bash
+# 1. Ensure the directory exists
+mkdir -p ~/.config/mpv/scripts/
+
+# 2. Copy all scripts
+cp src/*.lua ~/.config/mpv/scripts/
+
+# Or copy individual scripts:
+cp src/repeat-script.lua ~/.config/mpv/scripts/
+cp src/playlist-script.lua ~/.config/mpv/scripts/
+cp src/auto-load-playlist-script.lua ~/.config/mpv/scripts/
+cp src/my-first-script.lua ~/.config/mpv/scripts/
+```
+
+> **Tip (Development):** To keep scripts in sync with this repository without copying each time, create symlinks:
+> ```bash
+> ln -sf $(pwd)/src/*.lua ~/.config/mpv/scripts/
+> ```
+
+### Windows:
+
+```cmd
+mkdir %APPDATA%\mpv\scripts
+copy src\*.lua %APPDATA%\mpv\scripts\
 ```
 
 ---
 
-## 🚀 How to Use This Template for a New Project
+## 📦 Scripts Overview
 
-### Step 1: Duplicate this template
-Copy the entire folder into your new project directory:
-```bash
-cp -r /path/to/base-project /path/to/my-new-project
-cd /path/to/my-new-project
-```
+### 1. Auto-Load Playlist (`src/auto-load-playlist-script.lua`)
+Automatically scans the directory of the currently playing file and appends sibling files sharing the same prefix (e.g. multi-part episodes or series) to the playlist in alphabetical order, keeping the active track in its correct position.
 
-### Step 2: Select your tech stack rules
-In `.agents/rules/`:
-1. **Always keep `common/`** (core security, development workflow, testing, and code quality).
-2. **Keep only the language/framework folder you are using** (e.g., `typescript`, `python`, `golang`, `react`, etc.).
-3. **Delete the unused language folders** to keep your AI context lean and fast.
+### 2. Playlist OSD Overlay (`src/playlist-script.lua`)
+Press **`Ctrl+p`** to show the current playlist as an on-screen display overlay for 5 seconds. The active playing track is highlighted with `▶ `.
 
-*Example for a TypeScript project:*
-```bash
-cd .agents/rules
-# Keep common and typescript, delete the rest:
-rm -rf angular arkts cpp csharp dart fsharp golang java kotlin nuxt perl php python react-native ruby rust swift vue web
-```
+### 3. Repeat Toggle (`src/repeat-script.lua`)
+Press **`Ctrl+r`** to cycle playlist looping (`cycle loop-playlist`) between enabled (`inf`) and disabled (`no`).
 
-### Step 3: Configure Environment Variables
-Copy `.env.example` to `.env` and fill in any secrets or configuration:
-```bash
-cp .env.example .env
-```
-*(Never commit `.env` files to git. `.gitignore` is already pre-configured to block them).*
-
-### Step 4: Enable Pre-Commit Security Hook
-Tell Git to use the tracked pre-commit hook:
-```bash
-git config core.hooksPath .githooks
-```
-*(This automatically runs Gitleaks to scan for leaked secrets, keys, and accidental `.env` commits before every `git commit`).*
-
-### Step 5: Update Project Information
-Replace this `README.md` with your actual project's purpose, architecture, and setup instructions.
+### 4. Greeting & Verification (`src/my-first-script.lua`)
+Press **`Ctrl+h`** to display a 3-second OSD message (`"Hello from my custom script!"`) verifying that mpv is loading scripts correctly.
 
 ---
 
-## 📁 Project Structure
+## 📁 Repository Structure
 
 ```
 .
-├── .agents/                      # AI assistant customizations & playbooks
-│   ├── rules/                    # Workspace guidelines (common + your tech stack)
-│   │   ├── common/               # Security, testing, workflow, and code style
-│   │   └── <your-language>/      # Language-specific idiomatic practices
-│   ├── skills/                   # High-value on-demand engineering skills
-│   │   ├── tdd-workflow/         # Test-driven development enforcement
-│   │   ├── security-scan/        # Vulnerability & secret audits
-│   │   ├── api-design/           # Clean REST / API contract design
-│   │   ├── docker-patterns/      # Production containerization
-│   │   └── ...                   # Curated universal software skills
-├── .github/                      # CI/CD pipelines & Pull Request templates
-│   ├── workflows/                # Security SAST & DAST workflows
-│   └── pull_request_template.md  # Enforced PR review checklist
-├── .githooks/                    # Tracked git hooks (pre-commit, commit-msg, pre-push)
-├── .editorconfig                 # Cross-IDE code formatting & line-ending standards
-├── .env.example                  # Clean environment variable starter template
-├── .gitignore                    # Universal multi-language gitignore
-├── .gitleaksignore               # Secret scanning baseline exclusions
-├── docs/                         # Architecture documentation
-│   └── adr/                      # Architecture Decision Records (ADRs)
-├── AGENTS.md                     # Universal AI pairing guidelines
-└── README.md                     # Project documentation & onboarding
+├── src/                               # Lua scripts for mpv
+│   ├── auto-load-playlist-script.lua  # Auto-loads sibling files into playlist
+│   ├── playlist-script.lua            # OSD playlist overlay (Ctrl+p)
+│   ├── repeat-script.lua              # Toggle playlist looping (Ctrl+r)
+│   └── my-first-script.lua            # Verification & test script (Ctrl+h)
+├── docs/
+│   ├── SCRIPTS.md                     # Technical reference (events, properties, APIs)
+│   └── adr/                           # Architecture Decision Records
+│       └── 0001-modular-mpv-lua-script-architecture.md
+└── README.md
 ```
 
----
-
-## 🛡️ Core Engineering Principles
-
-* **Security First:** No hardcoded secrets, validate all boundary inputs, parameterize all queries.
-* **Plan Before Code:** Formulate an architectural plan and confirm requirements before making large code edits.
-* **Test-Driven (TDD):** Reproduce bugs with failing tests before fixing; write unit tests before implementation.
-* **Immutability:** Avoid unintended side-effects and in-place mutations.
-* **Defensive Verification:** Always run local test suites and linters before marking a task complete.
+For technical API details and event handling specifications, see [`docs/SCRIPTS.md`](file:///home/sahan-weerasiri/projects/mpv-update/docs/SCRIPTS.md).
